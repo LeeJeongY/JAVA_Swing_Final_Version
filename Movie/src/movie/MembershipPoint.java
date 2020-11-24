@@ -26,7 +26,7 @@ import javax.swing.table.TableColumnModel;
 
 public class MembershipPoint extends JPanel implements ActionListener{
 	private Image backgroundImage;
-	
+	private BufferedReader br;
 	private int pointSum;
 	private JButton btnGoToMain;
 	
@@ -36,7 +36,7 @@ public class MembershipPoint extends JPanel implements ActionListener{
 	Main_Frame mf;
 	
 	
-	public MembershipPoint (Main_Frame mf) { //생성자 
+	public MembershipPoint (Main_Frame mf) { 
 		try {
 			backgroundImage = ImageIO.read(new File("Background.jpg"));
 		} catch (IOException e) {
@@ -46,12 +46,12 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		this.setSize(700,100);
 		this.setLayout(new GridLayout(0,1));
 		
-		topPage(); //회원번호 
-		middlePage(); //포인트 적립칸 
-		bottomPage(); //총 합, 확인 버튼
-		tableCellCenter(jTable1);   // 테이블 가운데 정렬 추가
+		topPage(); 
+		middlePage();
+		bottomPage();
+		tableCellCenter(jTable1);
 	}
-	private void topPage() {//회원번호 
+	private void topPage() {
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(null);
 		pnlTop.setBackground(new Color(0,0,0,0));
@@ -73,7 +73,7 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		
 		this.add(pnlTop);
 	}
-	private void middlePage() {//포인트 적립칸 
+	private void middlePage() {
 		JPanel pnlMid = new JPanel();
 		pnlMid.setBackground(new Color(0,0,0,0));
 
@@ -90,7 +90,7 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		File file = new File(filePath);
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			br = new BufferedReader(new FileReader(file));
             String firstLine = null;
 			try {
 				firstLine = br.readLine().trim();
@@ -111,6 +111,12 @@ public class MembershipPoint extends JPanel implements ActionListener{
             
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
+		} finally {
+			try{
+				if(br != null)br.close();
+			}catch(IOException e2){
+				e2.printStackTrace();
+			}
 		}
 		
 		
@@ -119,7 +125,7 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		
 	}
 
-	private void bottomPage() {//총 합, 확인 버튼
+	private void bottomPage() {
 		JPanel pnlBot = new JPanel();
 		pnlBot.setBackground(new Color(0,0,0,0));
 		pnlBot.setLayout(null);
@@ -136,7 +142,7 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		lbPointAll.setFont(new Font("맑은 고딕", Font.PLAIN,30));
 		lbPointAll.setForeground(new Color(39,38,64));
 		lbPointAll.setBounds(280, 10, 200, 50);
-		lbPointAll.setHorizontalAlignment(JLabel.RIGHT); //오른쪽 정렬 
+		lbPointAll.setHorizontalAlignment(JLabel.RIGHT); 
 		
 		sumPoint();
 		lbPointAll.setText(pointSum+"");
@@ -148,8 +154,8 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		btnGoToMain.setBackground(new Color(6,90,96));
 		btnGoToMain.setForeground(Color.white);
 		btnGoToMain.setBounds(235, 150, 200, 80);
-		btnGoToMain.setBorderPainted(false); //버튼 라인 삭제
-		btnGoToMain.setFocusPainted(false); //버튼 클릭 라인 삭제
+		btnGoToMain.setBorderPainted(false); 
+		btnGoToMain.setFocusPainted(false); 
 		btnGoToMain.addActionListener(this);
 		
 		pnlBot.add(btnGoToMain);
@@ -157,14 +163,14 @@ public class MembershipPoint extends JPanel implements ActionListener{
 		this.add(pnlBot);
 	}
 	
-	private void sumPoint() { //포인트 테이블에서 가져와서 합산하는 메소드 
+	private void sumPoint() { 
 		int row = jTable1.getRowCount();
 		for(int i=0;i<row;i++){
 			pointSum += Integer.parseInt(jTable1.getValueAt(i, 3)+"");
 			
 		}
 	}
-	public void tableCellCenter(JTable t){  //테이블 셀 가운데 정렬
+	public void tableCellCenter(JTable t){  
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
 		dtcr.setHorizontalAlignment(SwingConstants.CENTER);
 		TableColumnModel tcm = t.getColumnModel();
@@ -175,7 +181,6 @@ public class MembershipPoint extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//메인으로 가기
 		mf.membershipPointToNext();
 	}
 	@Override
