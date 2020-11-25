@@ -22,20 +22,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class ParkingDialog extends JDialog implements ActionListener, FocusListener {
-	private JPanel pnBack; 
-	private JTextField tf1, tf2;
-	private JTextField tfCurrent;
-	private String str = "", str2 = "";
+	private JPanel pnBack; //바탕패널
+	private JTextField tf1, tf2; //각 차번호 입력창
+	private JTextField tfCurrent; //합치는 입력창
+	private String str = "", str2 = ""; //값 받을 곳
 	private JComboBox<String> box;
 	private JButton btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 	private JButton btnCancel, btnEnr, btnDelete;
 	Main_Frame mf;
-	String[] data;
-	String air = "";
-	BufferedReader br = null;
-	FileReader fr = null;
+	private String[] data;
+	private String air = "";
+	private BufferedReader br = null;
 	
-	public ParkingDialog(Main_Frame mf){ 
+	public ParkingDialog(Main_Frame mf){ //메인프레임
 		super(mf, true);
 		this.mf=mf;
 		this.setSize(500, 340);
@@ -43,24 +42,26 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
+		
+		//바탕 패널
 		pnBack = new JPanel();
 		pnBack.setBackground(Color.WHITE);
 		pnBack.setLayout(null);
 		
-		guideInputNum();
-		makeFields(); 
-		makeNumKey(); 
+		guideInputNum(); //안내 문구
+		makeFields(); //입력받을곳
+		makeNumKey(); //버튼
 		
 		this.add(pnBack);
 		this.setVisible(true);
 	}
-	private void guideInputNum(){ 
+	private void guideInputNum(){ //안내 문구
 		JLabel lbl = new JLabel("차량의 번호를 선택해주세요.");
 		lbl.setFont(new Font("맑은고딕", Font.BOLD, 20));
 		lbl.setBounds(105, -20, 300, 100);
 		pnBack.add(lbl);
 	}
-	private void makeFields(){ 
+	private void makeFields(){ //입력받을 곳
 		tf1 = new JTextField(5);
 		tf2 = new JTextField(10);
 		
@@ -80,7 +81,8 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		pnBack.add(box);
 		
 	}
-	private void makeNumKey(){ 
+	private void makeNumKey(){ //버튼
+		//번호버튼
 		btn1 = new JButton("1");
 		btn2 = new JButton("2");
 		btn3 = new JButton("3");
@@ -114,7 +116,7 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		btn9.setBounds(270, 170, 50, 50);
 		btn0.setBounds(330, 170, 50, 50);
 		
-		btn1.setBorderPainted(false); 
+		btn1.setBorderPainted(false); //버튼 라인 삭제
 		btn2.setBorderPainted(false); 
 		btn3.setBorderPainted(false);
 		btn4.setBorderPainted(false);
@@ -125,7 +127,7 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		btn9.setBorderPainted(false); 
 		btn0.setBorderPainted(false); 
 		
-		btn1.setFocusPainted(false);
+		btn1.setFocusPainted(false); //버튼 클릭 라인 삭제
 		btn2.setFocusPainted(false); 
 		btn3.setFocusPainted(false); 
 		btn4.setFocusPainted(false); 
@@ -136,7 +138,7 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		btn9.setFocusPainted(false); 
 		btn0.setFocusPainted(false); 
 		
-		btn1.setContentAreaFilled(false); 
+		btn1.setContentAreaFilled(false); //버튼 배경 삭제
 		btn2.setContentAreaFilled(false); 
 		btn3.setContentAreaFilled(false); 
 		btn4.setContentAreaFilled(false); 
@@ -147,7 +149,7 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		btn9.setContentAreaFilled(false); 
 		btn0.setContentAreaFilled(false); 
 		
-		btn1.addActionListener(this); 
+		btn1.addActionListener(this); //액션리스너
 		btn2.addActionListener(this);
 		btn3.addActionListener(this);
 		btn4.addActionListener(this);
@@ -169,15 +171,16 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 		pnBack.add(btn9);
 		pnBack.add(btn0);
 		
+		//그 외 버튼		
 		btnCancel = new JButton(new ImageIcon("Back111.png"));
 		btnDelete = new JButton("지우기");
 		btnEnr = new JButton(new ImageIcon("Confirm.png"));
 		
-		btnCancel.setBorderPainted(false); 
+		btnCancel.setBorderPainted(false); //버튼 라인 삭제
 		btnDelete.setBorderPainted(false); 
 		btnEnr.setBorderPainted(false); 
 		
-		btnCancel.setContentAreaFilled(false); 
+		btnCancel.setContentAreaFilled(false); //버튼 배경 삭제
 		btnDelete.setContentAreaFilled(false); 
 		btnEnr.setContentAreaFilled(false); 
 		
@@ -220,28 +223,28 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 	}
 	
 	@Override
-	public void focusGained(FocusEvent arg0) { 
+	public void focusGained(FocusEvent arg0) { //포커스 설정
 		if(arg0.getSource() == tf1){
 			tfCurrent = tf1;
 		} else {
 			tfCurrent = tf2;
 		}
 	}
-	public void focusLost(FocusEvent arg0) {} 
+	public void focusLost(FocusEvent arg0) {} //사용 안함
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnDelete) { 
-			if(tfCurrent == tf1 && !tf1.getText().trim().equals("")) { 
-				tf1.setText((tf1.getText()).substring(0, tf1.getText().length() - 1));
-				str = tf1.getText();
+		if(e.getSource() == btnDelete) { // 지우기 버튼 눌렀을때
+			if(tfCurrent == tf1 && !tf1.getText().trim().equals("")) { // tf1이 선택되어있고 tf1이 공백이 아니면
+				tf1.setText((tf1.getText()).substring(0, tf1.getText().length() - 1)); // tf1에 담겨있는 값을 마지막부터 1개씩 자른다
+				str = tf1.getText(); //tf1에 담겨있는 값을 str에 넣기
 			}
 			
 			if(tfCurrent == tf2 && !tf2.getText().trim().equals("")) {
 				tf2.setText((tf2.getText()).substring(0, tf2.getText().length() - 1));
 				str2 = tf2.getText();
 			}
-		} else if(e.getSource() == btnEnr) { 
+		} else if(e.getSource() == btnEnr) { //차량번호를 입력하기 눌렀을 때
 			data = new String[3];
 			data[0] = tf1.getText();
 			data[1] = box.getSelectedItem().toString();
@@ -279,7 +282,7 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 								new ParkingEnrDialog(data, this, mf);
 							}
 							
-						}else{
+						}else{// 처음에 파일이없을 때 한번만 실행됨
 							fileSave(f, air);
 							this.dispose();
 							new ParkingEnrDialog(data, this, mf);
@@ -293,12 +296,12 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 			this.dispose();
 		}else if(e.getSource() == btnCancel){
 			this.dispose();
-		}else {
+		}else { //번호 입력 버튼
 			JButton btn = (JButton)e.getSource();
 			if(tfCurrent == tf1) {
 				str = str + btn.getActionCommand();
 				tfCurrent.setText(str);
-				if(tf1.getText().length() > 2){ 
+				if(tf1.getText().length() > 2){ //앞자리 제한
 					str = "";
 					tf1.setText("");
 					JOptionPane.showMessageDialog(mf, "2자리만 선택 가능합니다.");
@@ -306,7 +309,7 @@ public class ParkingDialog extends JDialog implements ActionListener, FocusListe
 			} else {
 				str2 = str2 + btn.getActionCommand();
 				tfCurrent.setText(str2);
-				if(tf2.getText().length() > 4){ 
+				if(tf2.getText().length() > 4){ // 뒷자리 제한
 					str2 = "";
 					tf2.setText("");
 					JOptionPane.showMessageDialog(mf, "4자리만 선택 가능합니다.");

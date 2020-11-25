@@ -1062,6 +1062,10 @@ public class Purchase_ChooseMovieAndTime extends JPanel implements ActionListene
 				JOptionPane.showMessageDialog(mf, "선택한 인원수(" + customer + "명)에 맞게 좌석을 선택해주세요.");
 			}	
 		}
+		if (e.getSource() == btnBack){
+			String[] data = new String[18];
+			mf.purchase_ChooseMovieAndTimeToNext(1, data);
+		}
 
 	}
 }
